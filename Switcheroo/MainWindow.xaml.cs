@@ -560,7 +560,13 @@ namespace Switcheroo
                 {
                     bool isClosed = await _windowCloser.TryCloseAsync(win);
                     if (isClosed)
+                    {
                         RemoveWindow(win);
+                    }
+                    else
+                    {
+                        win.AppWindow.SwitchToLastVisibleActivePopup();
+                    }
                 }
             }
             else

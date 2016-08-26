@@ -87,8 +87,7 @@
                             <EventTrigger.Actions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0:0:0.150" Storyboard.TargetProperty="Opacity"
-                                                         To="1" />
+                                        <DoubleAnimation Duration="0:0:0.150" Storyboard.TargetProperty="Opacity" To="1" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger.Actions>
@@ -97,8 +96,7 @@
                             <EventTrigger.Actions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0:0:0.150" Storyboard.TargetProperty="Opacity"
-                                                         To="0.4" />
+                                        <DoubleAnimation Duration="0:0:0.150" Storyboard.TargetProperty="Opacity" To="0.4" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger.Actions>

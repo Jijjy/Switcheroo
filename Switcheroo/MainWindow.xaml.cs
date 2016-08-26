@@ -278,7 +278,7 @@ namespace Switcheroo
 
             tb.Clear();
             tb.Focus();
-            CenterWindow();
+            CenterWindowBelowCursor();
             ScrollSelectedItemIntoView();
         }
 
@@ -317,6 +317,37 @@ namespace Switcheroo
             // Position the window in the center of the screen
             Left = (SystemParameters.PrimaryScreenWidth/2) - (ActualWidth/2);
             Top = (SystemParameters.PrimaryScreenHeight/2) - (ActualHeight/2);
+        }
+
+        /// <summary>
+        /// Place the Switcheroo window below the cursor, centered horizontally
+        /// </summary>
+        private void CenterWindowBelowCursor()
+        {
+            // Force a rendering before repositioning the window
+            SizeToContent = SizeToContent.Manual;
+            SizeToContent = SizeToContent.WidthAndHeight;
+
+            var cursorPosition = System.Windows.Forms.Control.MousePosition;
+
+            var screen = Screen.FromPoint(cursorPosition);
+
+            if (cursorPosition.X - ActualWidth / 2 < screen.Bounds.Left)
+            {
+                Left = screen.Bounds.Left;
+            }
+            else if (cursorPosition.X + ActualWidth / 2 > screen.Bounds.Right)
+            {
+                Left = screen.Bounds.Right - ActualWidth;
+            }
+            else
+            {
+                Left = cursorPosition.X - ActualWidth / 2;
+            }
+
+            Top = (cursorPosition.Y + ActualHeight > screen.Bounds.Bottom)
+                ? screen.Bounds.Bottom - ActualHeight
+                : cursorPosition.Y;
         }
 
         /// <summary>

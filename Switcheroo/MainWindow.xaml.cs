@@ -362,8 +362,38 @@ namespace Switcheroo
             {
                 var win = (AppWindowViewModel) (lb.SelectedItem ?? lb.Items[0]);
                 win.AppWindow.SwitchToLastVisibleActivePopup();
+
+                MoveToScreen(win.AppWindow);
             }
             HideWindow();
+        }
+
+        private void MoveToScreen(AppWindow appWindow) {
+
+            var fromScreen = Screen.FromRectangle(appWindow.Rectangle);
+            var toScreen = Screen.FromPoint(System.Windows.Forms.Control.MousePosition);
+
+            if (fromScreen == toScreen) { return; }
+
+            if (appWindow.WindowState == FormWindowState.Maximized) {
+                appWindow.WindowState = FormWindowState.Normal;
+                appWindow.Position = toScreen.Bounds;
+                appWindow.WindowState = FormWindowState.Maximized;
+                return;
+            }
+
+            var newPos = appWindow.Position;
+
+            var xOffset = fromScreen.Bounds.Location.X - toScreen.Bounds.Location.X;
+            var yOffset = fromScreen.Bounds.Location.Y - toScreen.Bounds.Location.Y;
+
+            newPos.Left -= xOffset;
+            newPos.Right -= xOffset;
+
+            newPos.Top-= yOffset;
+            newPos.Bottom -= yOffset;
+
+            appWindow.Position = newPos;
         }
 
         private void HideWindow()

@@ -247,7 +247,10 @@ namespace Switcheroo
         /// </summary>
         private void LoadData(InitialFocus focus)
         {
-            _unfilteredWindowList = AppWindow.AllAltTabWindows.Select(window => new AppWindowViewModel(window)).ToList();
+            _unfilteredWindowList = AppWindow.AllAltTabWindows
+                .Select(window => new AppWindowViewModel(window))
+                .OrderBy(w => w.WindowTitle)
+                .ToList();
 
             var firstWindow = _unfilteredWindowList.FirstOrDefault();
 
@@ -308,7 +311,7 @@ namespace Switcheroo
         /// <summary>
         /// Place the Switcheroo window in the center of the screen
         /// </summary>
-        private void CenterWindow()
+        private void CenterWindowOnScreen()
         {
             // Force a rendering before repositioning the window
             SizeToContent = SizeToContent.Manual;
@@ -450,11 +453,11 @@ namespace Switcheroo
             if (Visibility != Visibility.Visible)
             {
                 _foregroundWindow = SystemWindow.ForegroundWindow;
-                Show();
-                Activate();
                 Keyboard.Focus(tb);
                 LoadData(InitialFocus.NextItem);
                 Opacity = 1;
+                Show();
+                Activate();
             }
             else
             {

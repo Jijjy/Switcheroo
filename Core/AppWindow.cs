@@ -37,7 +37,8 @@ namespace Switcheroo.Core
     {
 
         private bool _hidden;
-        public bool Hidden {
+        public bool Hidden
+        {
             get { return _hidden; }
             set
             {
@@ -115,6 +116,16 @@ namespace Switcheroo.Core
             }
         }
 
+        public static IEnumerable<AppWindow> AllAltTabWindows
+        {
+            get
+            {
+                return AllToplevelWindows
+                    .Where(a => a.IsAltTabWindow())
+                    .ToList();
+            }
+        }
+
         public bool IsAltTabWindow()
         {
             if (!Hidden && !Visible) return false;
@@ -125,7 +136,7 @@ namespace Switcheroo.Core
             if (!IsOwnerOrOwnerNotVisible()) return false;
             if (HasITaskListDeletedProperty()) return false;
             if (IsCoreWindow()) return false;
-            
+
             return true;
         }
 

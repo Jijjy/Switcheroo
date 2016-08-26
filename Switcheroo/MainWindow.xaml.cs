@@ -247,7 +247,7 @@ namespace Switcheroo
         /// </summary>
         private void LoadData(InitialFocus focus)
         {
-            _unfilteredWindowList = new WindowFinder().GetWindows().Select(window => new AppWindowViewModel(window)).ToList();
+            _unfilteredWindowList = AppWindow.AllAltTabWindows.Select(window => new AppWindowViewModel(window)).ToList();
 
             var firstWindow = _unfilteredWindowList.FirstOrDefault();
 

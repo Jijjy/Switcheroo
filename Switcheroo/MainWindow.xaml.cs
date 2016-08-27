@@ -224,22 +224,21 @@ namespace Switcheroo
 
         private static async Task<Version> GetLatestVersion()
         {
-            try
-            {
-                var versionAsString =
-                    await
-                        new WebClient().DownloadStringTaskAsync(
-                            "https://raw.github.com/kvakulo/Switcheroo/update/version.txt");
-                Version newVersion;
-                if (Version.TryParse(versionAsString, out newVersion))
-                {
-                    return newVersion;
-                }
-            }
-            catch (WebException)
-            {
-            }
             return null;
+            //try
+            //{
+            //    const string versionFileUrl = "https://raw.github.com/kvakulo/Switcheroo/update/version.txt";
+            //    var versionAsString = await new WebClient().DownloadStringTaskAsync(versionFileUrl);
+            //    Version newVersion;
+            //    if (Version.TryParse(versionAsString, out newVersion))
+            //    {
+            //        return newVersion;
+            //    }
+            //}
+            //catch (WebException)
+            //{
+            //}
+            //return null;
         }
 
         /// <summary>
@@ -359,7 +358,7 @@ namespace Switcheroo
             var fromScreen = Screen.FromRectangle(appWindow.Rectangle);
             var toScreen = Screen.FromPoint(System.Windows.Forms.Control.MousePosition);
 
-            if (fromScreen == toScreen) { return; }
+            if (fromScreen.Bounds == toScreen.Bounds) { return; }
 
             if (appWindow.WindowState == FormWindowState.Maximized) {
                 appWindow.WindowState = FormWindowState.Normal;

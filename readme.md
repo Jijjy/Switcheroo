@@ -1,7 +1,9 @@
 About
 -----
 
-This fork was originally intended to turn [Switcheroo](https://github.com/kvakulo/Switcheroo) into a virtual desktop manager, however after adding some tweaks to make it work better with multiple monitors and the mouse that idea was abandoned. 
+This fork was originally intended to turn [Switcheroo](https://github.com/kvakulo/Switcheroo) into a virtual desktop manager, however after adding some tweaks to make it work better with multiple monitors and the mouse that idea was abandoned.
+
+Try mapping the hotkey to a side mouse button!
 
 Changes
 -----

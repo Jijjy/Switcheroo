@@ -35,19 +35,6 @@ namespace Switcheroo.Core
     /// </summary>
     public class AppWindow : SystemWindow
     {
-
-        private bool _hidden;
-        public bool Hidden
-        {
-            get { return _hidden; }
-            set
-            {
-                if (_hidden == value) return;
-                _hidden = value;
-                VisibilityFlag = !Hidden;
-            }
-        }
-
         public string ProcessTitle
         {
             get
@@ -128,7 +115,7 @@ namespace Switcheroo.Core
 
         public bool IsAltTabWindow()
         {
-            if (!Hidden && !Visible) return false;
+            if (!Visible) return false;
             if (!HasWindowTitle()) return false;
             if (IsAppWindow()) return true;
             if (IsToolWindow()) return false;

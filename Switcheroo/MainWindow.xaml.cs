@@ -254,16 +254,6 @@ namespace Switcheroo
 
             var firstWindow = _unfilteredWindowList.FirstOrDefault();
 
-            var foregroundWindowMovedToBottom = false;
-            
-            // Move first window to the bottom of the list if it's related to the foreground window
-            if (firstWindow != null && AreWindowsRelated(firstWindow.AppWindow, _foregroundWindow))
-            {
-                _unfilteredWindowList.RemoveAt(0);
-                _unfilteredWindowList.Add(firstWindow);
-                foregroundWindowMovedToBottom = true;
-            }
-
             _filteredWindowList = new ObservableCollection<AppWindowViewModel>(_unfilteredWindowList);
             _windowCloser = new WindowCloser();
 
@@ -277,7 +267,7 @@ namespace Switcheroo
             lb.DataContext = null;
             lb.DataContext = _filteredWindowList;
 
-            FocusItemInList(focus, foregroundWindowMovedToBottom);
+            FocusItemInList(focus);
 
             tb.Clear();
             tb.Focus();
@@ -290,15 +280,11 @@ namespace Switcheroo
             return window1.HWnd == window2.HWnd || window1.Process.Id == window2.Process.Id;
         }
 
-        private void FocusItemInList(InitialFocus focus, bool foregroundWindowMovedToBottom)
+        private void FocusItemInList(InitialFocus focus)
         {
             if (focus == InitialFocus.PreviousItem)
             {
                 var previousItemIndex = lb.Items.Count - 1;
-                if (foregroundWindowMovedToBottom)
-                {
-                    previousItemIndex--;
-                }
 
                 lb.SelectedIndex = previousItemIndex > 0 ? previousItemIndex : 0;
             }

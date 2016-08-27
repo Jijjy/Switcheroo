@@ -224,21 +224,20 @@ namespace Switcheroo
 
         private static async Task<Version> GetLatestVersion()
         {
+            try
+            {
+                const string versionFileUrl = "https://raw.github.com/jijjy/Switcheroo/update/version.txt";
+                var versionAsString = await new WebClient().DownloadStringTaskAsync(versionFileUrl);
+                Version newVersion;
+                if (Version.TryParse(versionAsString, out newVersion))
+                {
+                    return newVersion;
+                }
+            }
+            catch (WebException)
+            {
+            }
             return null;
-            //try
-            //{
-            //    const string versionFileUrl = "https://raw.github.com/kvakulo/Switcheroo/update/version.txt";
-            //    var versionAsString = await new WebClient().DownloadStringTaskAsync(versionFileUrl);
-            //    Version newVersion;
-            //    if (Version.TryParse(versionAsString, out newVersion))
-            //    {
-            //        return newVersion;
-            //    }
-            //}
-            //catch (WebException)
-            //{
-            //}
-            //return null;
         }
 
         /// <summary>

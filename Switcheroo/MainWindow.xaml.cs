@@ -258,9 +258,9 @@ namespace Switcheroo
 
             foreach (var window in _unfilteredWindowList)
             {
-                window.FormattedTitle = new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.Title)});
+                window.FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.Title) });
                 window.FormattedProcessTitle =
-                    new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.ProcessTitle)});
+                    new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.ProcessTitle) });
             }
 
             lb.DataContext = null;
@@ -303,8 +303,8 @@ namespace Switcheroo
             SizeToContent = SizeToContent.WidthAndHeight;
 
             // Position the window in the center of the screen
-            Left = (SystemParameters.PrimaryScreenWidth/2) - (ActualWidth/2);
-            Top = (SystemParameters.PrimaryScreenHeight/2) - (ActualHeight/2);
+            Left = (SystemParameters.PrimaryScreenWidth / 2) - (ActualWidth / 2);
+            Top = (SystemParameters.PrimaryScreenHeight / 2) - (ActualHeight / 2);
         }
 
         /// <summary>
@@ -345,7 +345,7 @@ namespace Switcheroo
         {
             if (lb.Items.Count > 0)
             {
-                var win = (AppWindowViewModel) (lb.SelectedItem ?? lb.Items[0]);
+                var win = (AppWindowViewModel)(lb.SelectedItem ?? lb.Items[0]);
                 win.AppWindow.SwitchToLastVisibleActivePopup();
 
                 MoveToScreen(win.AppWindow);
@@ -353,14 +353,16 @@ namespace Switcheroo
             HideWindow();
         }
 
-        private void MoveToScreen(AppWindow appWindow) {
+        private void MoveToScreen(AppWindow appWindow)
+        {
 
             var fromScreen = Screen.FromRectangle(appWindow.Rectangle);
             var toScreen = Screen.FromPoint(System.Windows.Forms.Control.MousePosition);
 
             if (fromScreen.Bounds == toScreen.Bounds) { return; }
 
-            if (appWindow.WindowState == FormWindowState.Maximized) {
+            if (appWindow.WindowState == FormWindowState.Maximized)
+            {
                 appWindow.WindowState = FormWindowState.Normal;
                 appWindow.Position = toScreen.Bounds;
                 appWindow.WindowState = FormWindowState.Maximized;
@@ -375,7 +377,7 @@ namespace Switcheroo
             newPos.Left -= xOffset;
             newPos.Right -= xOffset;
 
-            newPos.Top-= yOffset;
+            newPos.Top -= yOffset;
             newPos.Bottom -= yOffset;
 
             appWindow.Position = newPos;
@@ -389,7 +391,7 @@ namespace Switcheroo
                 _windowCloser = null;
             }
 
-            Hide();           
+            Hide();
         }
 
         #endregion
@@ -594,17 +596,23 @@ namespace Switcheroo
             e.Handled = true;
         }
 
-        private void ListBoxItem_MouseUp(object sender, MouseButtonEventArgs e)
+        private async void ListBoxItem_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            Switch();
+            lb.SelectedItem = ((ListBoxItem)sender).DataContext;
+            switch (e.ChangedButton)
+            {
+                case MouseButton.Left: Switch(); break;
+                case MouseButton.Middle: await CloseWindow(); break;
+            }
+
             e.Handled = true;
         }
 
-        private async void CloseWindow(object sender, ExecutedRoutedEventArgs e)
+        private async Task CloseWindow()
         {
             if (lb.Items.Count > 0)
             {
-                var win = (AppWindowViewModel) lb.SelectedItem;
+                var win = (AppWindowViewModel)lb.SelectedItem;
                 if (win != null)
                 {
                     bool isClosed = await _windowCloser.TryCloseAsync(win);
@@ -622,6 +630,11 @@ namespace Switcheroo
             {
                 HideWindow();
             }
+        }
+
+        private async void CloseWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            await CloseWindow();
             e.Handled = true;
         }
 

@@ -123,6 +123,7 @@ namespace Switcheroo.Core
             if (!IsOwnerOrOwnerNotVisible()) return false;
             if (HasITaskListDeletedProperty()) return false;
             if (IsCoreWindow()) return false;
+            if (ProcessTitle == "ApplicationFrameHost") { return false; }
 
             return true;
         }
